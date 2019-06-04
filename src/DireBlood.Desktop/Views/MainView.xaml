@@ -66,13 +66,13 @@
                                 <Image Height="10" >
                                     <Image.Style>
                                         <Style TargetType="{x:Type Image}">
-                                            <Setter Property="Source" Value="/CheckProxy.Desktop;component/Icons/checked-green.png"/>
+                                            <Setter Property="Source" Value="/DireBlood;component/Icons/checked-green.png"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsResponding}" Value="True">
-                                                    <Setter Property="Source" Value="/CheckProxy.Desktop;component/Icons/checked-green.png"/>
+                                                    <Setter Property="Source" Value="/DireBlood;component/Icons/checked-green.png"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsResponding}" Value="False">
-                                                    <Setter Property="Source" Value="/CheckProxy.Desktop;component/Icons/unchecked-red.png"/>
+                                                    <Setter Property="Source" Value="/DireBlood;component/Icons/unchecked-red.png"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -87,13 +87,13 @@
                                 <Image Height="10" >
                                     <Image.Style>
                                         <Style TargetType="{x:Type Image}">
-                                            <Setter Property="Source" Value="/CheckProxy.Desktop;component/Icons/checked-green.png"/>
+                                            <Setter Property="Source" Value="/DireBlood;component/Icons/checked-green.png"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding WasVeryfied}" Value="True">
-                                                    <Setter Property="Source" Value="/CheckProxy.Desktop;component/Icons/checked-green.png"/>
+                                                    <Setter Property="Source" Value="/DireBlood;component/Icons/checked-green.png"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding WasVeryfied}" Value="False">
-                                                    <Setter Property="Source" Value="/CheckProxy.Desktop;component/Icons/unchecked-red.png"/>
+                                                    <Setter Property="Source" Value="/DireBlood;component/Icons/unchecked-red.png"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
