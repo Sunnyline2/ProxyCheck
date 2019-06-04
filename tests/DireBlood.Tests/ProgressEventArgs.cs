@@ -1,4 +1,4 @@
-﻿namespace CheckProxy.Core.Tests
+﻿namespace DireBlood.Tests
 {
     public class ProgressEventArgs
     {

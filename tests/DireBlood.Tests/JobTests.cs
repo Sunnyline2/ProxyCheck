@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CheckProxy.Core.Job;
+using DireBlood.Core.Job;
 using Xunit;
 
-namespace CheckProxy.Core.Tests
+namespace DireBlood.Tests
 {
     public class JobTests
     {

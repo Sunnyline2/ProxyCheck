@@ -5,8 +5,9 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using DireBlood.Core.Proxy;
 
-namespace CheckProxy.Core.Proxy
+namespace DireBlood.Core.Services
 {
     public class ProxyService : IProxyService
     {
@@ -28,7 +29,7 @@ namespace CheckProxy.Core.Proxy
             return string.Empty;
         }
 
-        public async Task<ICheckProxyResult> CheckProxyAsync(string host, ushort port, TimeSpan timeout, CancellationToken cancellationToken)
+        public async Task<IProxyModel> CheckProxyAsync(string host, ushort port, TimeSpan timeout, CancellationToken cancellationToken)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
             if (port <= 0) throw new ArgumentOutOfRangeException(nameof(port));
@@ -55,7 +56,7 @@ namespace CheckProxy.Core.Proxy
                                 var content = await httpContent.ReadAsStringAsync();
                                 var matches = GetMatches(content);
 
-                                return new CheckProxyResult(host, port)
+                                return new ProxyModel(host, port)
                                 {
                                     Country = GetValue(matches, "HTTP_CF_IPCOUNTRY"),
                                     IsResponding = true,
@@ -73,7 +74,7 @@ namespace CheckProxy.Core.Proxy
                     if (canceledException.CancellationToken.IsCancellationRequested)
                         throw;
                 }
-                return new CheckProxyResult(host, port) {IsResponding = false};
+                return new ProxyModel(host, port) {IsResponding = false};
             }
         }
     }

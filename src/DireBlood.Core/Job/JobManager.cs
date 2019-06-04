@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace CheckProxy.Core.Job
+namespace DireBlood.Core.Job
 {
     public class JobManager
     {

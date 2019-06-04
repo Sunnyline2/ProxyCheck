@@ -1,5 +1,5 @@
 ﻿using System;
-using CheckProxy.Core.Proxy;
+using DireBlood.Core.Proxy;
 
 namespace CheckProxy.Desktop.Models
 {
@@ -77,7 +77,7 @@ namespace CheckProxy.Desktop.Models
             set => Set(value, ref _status);
         }
 
-        public void Update(ICheckProxyResult info, bool wasVeryfied)
+        public void Update(IProxyModel info, bool wasVeryfied)
         {
             if (info == null)
             {

@@ -1,48 +1,50 @@
 ﻿using System;
+using System.Threading.Tasks;
 
-namespace CheckProxy.Core.Job
+namespace DireBlood.Core.Job
 {
-    public class Job<T> where T : class, new()
+    public class JobAsync<T> where T : class, new()
     {
-        public readonly T EventArgs = new T();
+        private readonly T _instance = new T();
         private readonly Progress<T> _progress = new Progress<T>();
-        private readonly Action<IProgress<T>, T> _action;
+        private readonly Func<IProgress<T>, T, Task> _func;
+
+        public JobAsync(Func<IProgress<T>, T, Task> func)
+        {
+            _func = func;
+        }
 
         private Action<T> _onProgressChanged;
         private Action<Exception> _onException;
         private Action _onBeforeExecution;
         private Action<T> _onSuccess;
 
-        public Job(Action<IProgress<T>, T> action)
-        {
-            _action = action;
-        }
-
-        public Job<T> OnProgressChanged(Action<T> action)
+        public JobAsync<T> OnProgressChanged(Action<T> action)
         {
             _onProgressChanged = action;
             return this;
         }
 
-        public Job<T> OnException(Action<Exception> action)
+        public JobAsync<T> OnException(Action<Exception> action)
         {
             _onException = action;
             return this;
         }
 
-        public Job<T> OnBeforeExecute(Action action)
+        public JobAsync<T> OnBeforeExecute(Action action)
         {
             _onBeforeExecution = action;
             return this;
         }
 
-        public Job<T> OnSuccess(Action<T> action)
+        public JobAsync<T> OnSuccess(Action<T> action)
         {
             _onSuccess = action;
             return this;
         }
 
-        public void Execute()
+
+        public async Task ExecuteAsync()
         {
             _progress.ProgressChanged += HandleProgressChanged;
             try
@@ -50,15 +52,16 @@ namespace CheckProxy.Core.Job
                 if (_onBeforeExecution != null)
                     _onBeforeExecution();
 
-                _action(_progress, EventArgs);
+                await _func(_progress, _instance);
 
                 if (_onSuccess != null)
-                    _onSuccess(EventArgs);
+                    _onSuccess(_instance);
             }
             catch (Exception exception)
             {
                 if (_onException == null)
                     throw;
+
                 _onException(exception);
             }
             finally

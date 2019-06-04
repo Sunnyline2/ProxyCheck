@@ -12,17 +12,19 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using CheckProxy.Core;
-using CheckProxy.Core.Job;
-using CheckProxy.Core.Proxy;
 using CheckProxy.Desktop.EventArgs;
 using Microsoft.Win32;
 using CheckProxy.Desktop.Models;
 using CheckProxy.Desktop.Utilities;
+using DireBlood.Core;
+using DireBlood.Core.Job;
+using DireBlood.Core.Proxy;
+using DireBlood.Core.Services;
+using GalaSoft.MvvmLight;
 
 namespace CheckProxy.Desktop.ViewModels
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : ViewModelBase
     {
         #region Fields
 
@@ -38,22 +40,23 @@ namespace CheckProxy.Desktop.ViewModels
 
         #region Properties
 
+
         public string Status
         {
             get => _status;
-            set => Set(value, ref _status);
+            set => Set( ref _status, value);
         }
 
         public string Title
         {
             get => _title;
-            set => Set(value, ref _title);
+            set => Set(ref _title, value);
         }
 
         public ProxyDetailsModel SelectedProxy
         {
             get => _selectedProxy;
-            set => Set(value, ref _selectedProxy);
+            set => Set(ref _selectedProxy, value);
         }
 
         public MetroWindow Window => _window ?? (_window = Application.Current.MainWindow as MetroWindow);
@@ -61,7 +64,7 @@ namespace CheckProxy.Desktop.ViewModels
         public ObservableCollection<ProxyDetailsModel> ProxyViewModels
         {
             get => _proxyViews;
-            set => Set(value, ref _proxyViews);
+            set => Set(ref _proxyViews, value);
         }
 
         #endregion

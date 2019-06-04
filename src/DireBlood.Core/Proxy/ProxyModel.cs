@@ -1,6 +1,6 @@
-﻿namespace CheckProxy.Core.Proxy
+﻿namespace DireBlood.Core.Proxy
 {
-    public class CheckProxyResult : ICheckProxyResult
+    public class ProxyModel : IProxyModel
     {
         public string Host { get; }
         public ushort Port { get; set; }
@@ -9,7 +9,7 @@
         public string Country { get; set; }
         public ProxyType ProxyType { get; set; }
 
-        public CheckProxyResult(string host, ushort port)
+        public ProxyModel(string host, ushort port)
         {
             Host = host;
             Port = port;

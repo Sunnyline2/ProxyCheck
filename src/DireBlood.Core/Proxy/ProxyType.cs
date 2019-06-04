@@ -1,4 +1,4 @@
-﻿namespace CheckProxy.Core.Proxy
+﻿namespace DireBlood.Core.Proxy
 {
     public enum ProxyType
     {

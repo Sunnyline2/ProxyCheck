@@ -15,6 +15,6 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CheckProxy.Core\CheckProxy.Core.csproj" />
+    <ProjectReference Include="..\..\src\DireBlood.Core\DireBlood.Core.csproj" />
   </ItemGroup>
 </Project>
