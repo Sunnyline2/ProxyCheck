@@ -21,13 +21,9 @@ namespace CheckProxy.Desktop.Views
     /// </summary>
     public partial class MainView : MetroWindow
     {
-        public readonly MainViewModel ViewModel;
-
         public MainView()
         {
             InitializeComponent();
-            ViewModel = new MainViewModel(this);
-            DataContext = ViewModel;
         }
     }
 }

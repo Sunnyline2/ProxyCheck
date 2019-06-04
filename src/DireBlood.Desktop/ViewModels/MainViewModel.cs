@@ -38,6 +38,8 @@ namespace CheckProxy.Desktop.ViewModels
 
         #endregion
 
+
+
         #region Properties
 
 
@@ -213,19 +215,9 @@ namespace CheckProxy.Desktop.ViewModels
 
         #endregion
 
-        #region Constructors
 
-#if DEBUG
-        public MainViewModel() : this(default(MetroWindow))
+        public MainViewModel()
         {
-
-        }
-#endif
-
-        public MainViewModel(MetroWindow window = default(MetroWindow))
-        {
-            _window = window;
-
             var models = new List<ProxyDetailsModel>
             {
                 new ProxyDetailsModel {Host = "35.162.160.108", Port = 8080},
@@ -241,9 +233,6 @@ namespace CheckProxy.Desktop.ViewModels
             }
         }
 
-        #endregion
-
-        #region Commands
 
         private async Task ShowGithubInfoAsync()
         {
@@ -413,7 +402,6 @@ namespace CheckProxy.Desktop.ViewModels
             await _jobManager.ExecuteAsync(job);
         }
 
-        #endregion
 
         #region Helpers
 

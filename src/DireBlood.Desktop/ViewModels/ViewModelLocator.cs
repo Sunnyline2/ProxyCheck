@@ -13,10 +13,9 @@
 */
 
 using CommonServiceLocator;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 
-namespace CheckProxy.Desktop.ViewModel
+namespace CheckProxy.Desktop.ViewModels
 {
     /// <summary>
     /// This class contains static references to all the view models in the
