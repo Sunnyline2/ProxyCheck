@@ -6,7 +6,7 @@ namespace CheckProxy.Desktop.Utilities
     {
         public static int CountLines(this StreamReader reader)
         {
-            int lines = 0;
+            var lines = 0;
             while (!reader.EndOfStream)
             {
                 reader.ReadLine();

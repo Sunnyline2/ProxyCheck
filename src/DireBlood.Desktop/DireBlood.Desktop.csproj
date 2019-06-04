@@ -92,10 +92,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Commands\CheckProxyCommand.cs" />
+    <Compile Include="Commands\GetFromFileCommand.cs" />
+    <Compile Include="Commands\Abstractions\ICommandFactory.cs" />
+    <Compile Include="Commands\SaveToFileCommand.cs" />
+    <Compile Include="Commands\ShowGithubCommand.cs" />
+    <Compile Include="Commands\ShowInfoCommand.cs" />
     <Compile Include="EventArgs\FileReadingEventArgs.cs" />
     <Compile Include="EventArgs\FileWritingEventArgs.cs" />
     <Compile Include="EventArgs\ProxyCheckingEventArgs.cs" />
+    <Compile Include="Factory\MetroDialogSettingsFactory.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="App.xaml.cs">
@@ -103,7 +109,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\ProxyDetailsModel.cs" />
-    <Compile Include="RelayCommand.cs" />
+    <Compile Include="Commands\Abstractions\RelayCommand.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -155,8 +161,6 @@
       <Name>DireBlood.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

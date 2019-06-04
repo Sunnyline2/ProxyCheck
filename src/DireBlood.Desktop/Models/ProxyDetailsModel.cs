@@ -1,16 +1,17 @@
 ﻿using System;
 using DireBlood.Core.Proxy;
+using GalaSoft.MvvmLight;
 
 namespace CheckProxy.Desktop.Models
 {
-    public class ProxyDetailsModel : BaseViewModel, IEquatable<ProxyDetailsModel>
+    public class ProxyDetailsModel : ViewModelBase, IEquatable<ProxyDetailsModel>
     { 
         private string _host;
 
         public string Host
         {
             get => _host;
-            set => Set(value, ref _host);
+            set => Set( ref _host, value );
         }
 
         private ushort _port;
@@ -18,7 +19,7 @@ namespace CheckProxy.Desktop.Models
         public ushort Port
         {
             get => _port;
-            set => Set(value, ref _port);
+            set => Set(ref _port, value);
         }
 
         private string _country;
@@ -26,7 +27,7 @@ namespace CheckProxy.Desktop.Models
         public string Country
         {
             get => _country;
-            set => Set(value, ref _country);
+            set => Set( ref _country, value);
         }
 
         private long _delay;
@@ -34,7 +35,7 @@ namespace CheckProxy.Desktop.Models
         public long Delay
         {
             get => _delay;
-            set => Set(value, ref _delay);
+            set => Set( ref _delay, value);
         }
 
         private ProxyType _proxyType;
@@ -42,7 +43,7 @@ namespace CheckProxy.Desktop.Models
         public ProxyType ProxyType
         {
             get => _proxyType;
-            set => Set(value, ref _proxyType);
+            set => Set( ref _proxyType, value);
         }
 
         private bool _isResponding;
@@ -50,7 +51,7 @@ namespace CheckProxy.Desktop.Models
         public bool IsResponding
         {
             get => _isResponding;
-            set => Set(value, ref _isResponding);
+            set => Set(ref _isResponding, value);
         }
 
         private bool _wasVeryfied;
@@ -58,7 +59,7 @@ namespace CheckProxy.Desktop.Models
         public bool WasVeryfied
         {
             get => _wasVeryfied;
-            set => Set(value, ref _wasVeryfied);
+            set => Set(ref _wasVeryfied, value);
         }
 
         private DateTime? _wasVeryfiedAt;
@@ -66,7 +67,7 @@ namespace CheckProxy.Desktop.Models
         public DateTime? WasVeryfiedAt
         {
             get => _wasVeryfiedAt;
-            set => Set(value, ref _wasVeryfiedAt);
+            set => Set(ref _wasVeryfiedAt, value);
         }
 
         private ProxyStatus _status;
@@ -74,7 +75,7 @@ namespace CheckProxy.Desktop.Models
         public ProxyStatus Status
         {
             get => _status;
-            set => Set(value, ref _status);
+            set => Set(ref _status, value);
         }
 
         public void Update(IProxyModel info, bool wasVeryfied)
@@ -106,20 +107,10 @@ namespace CheckProxy.Desktop.Models
         }
 
 
-        public override int GetHashCode()
-        {
-            int hostCode = Host == null ? 0 : Host.GetHashCode();
-            int portCode = Port.GetHashCode();
-            return hostCode ^ portCode;
-        }
-
-
         public enum ProxyStatus
         {
             Ready,
             InProcess,
         }
     }
-
-
 }
