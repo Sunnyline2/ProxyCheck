@@ -1,14 +1,12 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using CheckProxy.Desktop.Commands.Abstractions;
-using CheckProxy.Desktop.Factory;
-using CheckProxy.Desktop.Properties;
+using DireBlood.Commands.Abstractions;
+using DireBlood.Factory;
+using DireBlood.Properties;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace CheckProxy.Desktop.Commands
+namespace DireBlood.Commands
 {
     public class ShowGithubCommand : ICommandFactory
     {

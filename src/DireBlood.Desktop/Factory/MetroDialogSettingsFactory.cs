@@ -1,7 +1,7 @@
-﻿using CheckProxy.Desktop.Properties;
+﻿using DireBlood.Properties;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace CheckProxy.Desktop.Factory
+namespace DireBlood.Factory
 {
     public static class MetroDialogSettingsFactory
     {

@@ -1,6 +1,6 @@
 ﻿namespace DireBlood.Core.Proxy
 {
-    public interface IProxyModel
+    public interface IProxyStatus
     {
         string Country { get; }
         long Delay { get; }

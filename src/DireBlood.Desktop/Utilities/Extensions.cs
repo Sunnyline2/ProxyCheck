@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace CheckProxy.Desktop.Utilities
+namespace DireBlood.Utilities
 {
     public static class Extensions
     {

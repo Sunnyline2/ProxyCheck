@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using CheckProxy.Desktop.Commands.Abstractions;
-using CheckProxy.Desktop.EventArgs;
-using CheckProxy.Desktop.ViewModels;
+using DireBlood.Commands.Abstractions;
 using DireBlood.Core.Job;
+using DireBlood.EventArgs;
+using DireBlood.ViewModels;
 using Microsoft.Win32;
 
-namespace CheckProxy.Desktop.Commands
+namespace DireBlood.Commands
 {
     public class SaveToFileCommand : ICommandFactory
     {

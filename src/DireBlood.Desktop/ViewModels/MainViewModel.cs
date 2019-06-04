@@ -1,26 +1,23 @@
-﻿using MahApps.Metro.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
-using CheckProxy.Desktop.Commands;
-using CheckProxy.Desktop.Commands.Abstractions;
-using CheckProxy.Desktop.EventArgs;
-using Microsoft.Win32;
-using CheckProxy.Desktop.Models;
-using CheckProxy.Desktop.Properties;
+using DireBlood.Commands;
+using DireBlood.Commands.Abstractions;
 using DireBlood.Core.Job;
 using DireBlood.Core.Services;
+using DireBlood.EventArgs;
+using DireBlood.Models;
+using DireBlood.Properties;
 using GalaSoft.MvvmLight;
+using MahApps.Metro.Controls;
 
-namespace CheckProxy.Desktop.ViewModels
+namespace DireBlood.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {

@@ -123,6 +123,9 @@
   <data name="AffirmativeButtonText" xml:space="preserve">
     <value>Tak</value>
   </data>
+  <data name="MainWindowFile" xml:space="preserve">
+    <value>PLIK</value>
+  </data>
   <data name="NegativeButtonText" xml:space="preserve">
     <value>Nie</value>
   </data>

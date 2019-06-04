@@ -29,7 +29,7 @@ namespace DireBlood.Core.Services
             return string.Empty;
         }
 
-        public async Task<IProxyModel> CheckProxyAsync(string host, ushort port, TimeSpan timeout, CancellationToken cancellationToken)
+        public async Task<IProxyStatus> CheckProxyAsync(string host, ushort port, TimeSpan timeout, CancellationToken cancellationToken)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
             if (port <= 0) throw new ArgumentOutOfRangeException(nameof(port));
@@ -56,7 +56,7 @@ namespace DireBlood.Core.Services
                                 var content = await httpContent.ReadAsStringAsync();
                                 var matches = GetMatches(content);
 
-                                return new ProxyModel(host, port)
+                                return new ProxyStatus(host, port)
                                 {
                                     Country = GetValue(matches, "HTTP_CF_IPCOUNTRY"),
                                     IsResponding = true,
@@ -74,7 +74,7 @@ namespace DireBlood.Core.Services
                     if (canceledException.CancellationToken.IsCancellationRequested)
                         throw;
                 }
-                return new ProxyModel(host, port) {IsResponding = false};
+                return new ProxyStatus(host, port) {IsResponding = false};
             }
         }
     }

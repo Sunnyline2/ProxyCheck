@@ -7,5 +7,6 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
     <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyName>DireBlood.Core</AssemblyName>
   </PropertyGroup>
 </Project>

@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using CheckProxy.Desktop.Commands.Abstractions;
-using CheckProxy.Desktop.EventArgs;
-using CheckProxy.Desktop.Models;
-using CheckProxy.Desktop.Utilities;
-using CheckProxy.Desktop.ViewModels;
+using DireBlood.Commands.Abstractions;
 using DireBlood.Core;
 using DireBlood.Core.Job;
-using MahApps.Metro.Controls;
+using DireBlood.EventArgs;
+using DireBlood.Models;
+using DireBlood.Utilities;
+using DireBlood.ViewModels;
 using Microsoft.Win32;
 
-namespace CheckProxy.Desktop.Commands
+namespace DireBlood.Commands
 {
     public class GetFromFileCommand : ICommandFactory
     {

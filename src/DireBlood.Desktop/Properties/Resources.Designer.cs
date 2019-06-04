@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CheckProxy.Desktop.Properties {
+namespace DireBlood.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CheckProxy.Desktop.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CheckProxy.Desktop.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DireBlood.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -75,6 +75,15 @@ namespace CheckProxy.Desktop.Properties {
         internal static string AffirmativeButtonText {
             get {
                 return ResourceManager.GetString("AffirmativeButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PLIK.
+        /// </summary>
+        internal static string MainWindowFile {
+            get {
+                return ResourceManager.GetString("MainWindowFile", resourceCulture);
             }
         }
         

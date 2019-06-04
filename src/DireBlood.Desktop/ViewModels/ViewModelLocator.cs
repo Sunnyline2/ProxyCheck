@@ -15,7 +15,7 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 
-namespace CheckProxy.Desktop.ViewModels
+namespace DireBlood.ViewModels
 {
     /// <summary>
     /// This class contains static references to all the view models in the

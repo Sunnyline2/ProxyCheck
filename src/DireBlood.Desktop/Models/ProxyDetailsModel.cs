@@ -2,7 +2,7 @@
 using DireBlood.Core.Proxy;
 using GalaSoft.MvvmLight;
 
-namespace CheckProxy.Desktop.Models
+namespace DireBlood.Models
 {
     public class ProxyDetailsModel : ViewModelBase, IEquatable<ProxyDetailsModel>
     { 
@@ -78,7 +78,7 @@ namespace CheckProxy.Desktop.Models
             set => Set(ref _status, value);
         }
 
-        public void Update(IProxyModel info, bool wasVeryfied)
+        public void Update(IProxyStatus info, bool wasVeryfied)
         {
             if (info == null)
             {

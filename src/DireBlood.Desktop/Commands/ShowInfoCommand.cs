@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using CheckProxy.Desktop.Commands.Abstractions;
-using CheckProxy.Desktop.Properties;
+﻿using System.Threading.Tasks;
+using DireBlood.Commands.Abstractions;
+using DireBlood.Properties;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace CheckProxy.Desktop.Commands
+namespace DireBlood.Commands
 {
    public class ShowInfoCommand : ICommandFactory
     {

@@ -1,6 +1,6 @@
 ﻿namespace DireBlood.Core.Proxy
 {
-    public class ProxyModel : IProxyModel
+    public class ProxyStatus : IProxyStatus
     {
         public string Host { get; }
         public ushort Port { get; set; }
@@ -9,7 +9,7 @@
         public string Country { get; set; }
         public ProxyType ProxyType { get; set; }
 
-        public ProxyModel(string host, ushort port)
+        public ProxyStatus(string host, ushort port)
         {
             Host = host;
             Port = port;

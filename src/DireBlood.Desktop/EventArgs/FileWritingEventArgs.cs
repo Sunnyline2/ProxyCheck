@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CheckProxy.Desktop.EventArgs
+namespace DireBlood.EventArgs
 {
     public class FileWritingEventArgs : System.EventArgs
     {

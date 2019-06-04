@@ -1,4 +1,4 @@
-﻿namespace CheckProxy.Desktop.Commands.Abstractions
+﻿namespace DireBlood.Commands.Abstractions
 {
     public interface ICommandFactory
     {
