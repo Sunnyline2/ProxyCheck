@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using DireBlood.Commands.Abstractions;
 using DireBlood.Core.Job;
 using DireBlood.EventArgs;
+using DireBlood.Models;
+using DireBlood.Repository;
+using DireBlood.Services;
 using DireBlood.ViewModels;
 using Microsoft.Win32;
 
@@ -11,22 +14,30 @@ namespace DireBlood.Commands
 {
     public class SaveToFileCommand : ICommandFactory
     {
-        private readonly MainViewModel mainViewModel;
+        private readonly object context;
+        private readonly IJobManager jobManager;
+        private readonly IStatusService statusService;
+        private readonly IObservableRepository<ProxyDetailsModel> proxyRepository;
 
-        public SaveToFileCommand(MainViewModel mainViewModel)
+        public SaveToFileCommand(object context, IJobManager jobManager, IStatusService statusService, IObservableRepository<ProxyDetailsModel> proxyRepository)
         {
-            this.mainViewModel = mainViewModel;
+            this.context = context;
+            this.jobManager = jobManager;
+            this.statusService = statusService;
+            this.proxyRepository = proxyRepository;
         }
 
         public RelayCommand GetCommand()
         {
-            return new RelayCommand(async () => await SaveToFileAsync(), o => !mainViewModel.JobManager.IsRunning);    
+            return new RelayCommand(async () => await SaveToFileAsync(), o => !jobManager.IsRunning);    
         }
 
         private async Task SaveToFileAsync()
         {
-            if (mainViewModel.ProxyViewModels.Any() == false)
+            if (!proxyRepository.GetAll().Any())
+            {
                 return;
+            }
 
             var saveDialog = new SaveFileDialog
             {
@@ -37,27 +48,30 @@ namespace DireBlood.Commands
 
             var dialogResult = saveDialog.ShowDialog();
             if (dialogResult == false)
+            {
                 return;
+
+            }
 
             var job = new JobAsync<FileWritingEventArgs>((progress, args) => Task.Run(async () =>
                 {
-                    args.Count = mainViewModel.ProxyViewModels.Count;
+                    args.Count = proxyRepository.GetAll().Count;
                     progress.Report(args);
 
                     using (var fileStream = new FileStream(saveDialog.FileName, FileMode.Create))
                     using (var streamWriter = new StreamWriter(fileStream))
                     {
-                        for (int i = 0; i < mainViewModel.ProxyViewModels.Count; i++)
+                        for (int i = 0; i < args.Count; i++)
                         {
-                            var proxy = mainViewModel.ProxyViewModels.ElementAt(i);
+                            var proxy = proxyRepository.GetAll().ElementAt(i);
                             await streamWriter.WriteLineAsync($"{proxy.Host}:{proxy.Port}");
                         }
                     }
                 }))
-                .OnProgressChanged(args => mainViewModel.SetStatus($"Trwa zapisywanie.. {args.Current}/{args.Count} {args.GetPergentage()}%"))
-                .OnSuccess(args => mainViewModel.SetStatus($"Pomyślnie zapisano {args.Count} adresów proxy."));
+                .OnProgressChanged(args => statusService.SetStatus($"Trwa zapisywanie.. {args.Current}/{args.Count} {args.GetPergentage()}%"))
+                .OnSuccess(args => statusService.SetStatus($"Pomyślnie zapisano {args.Count} adresów proxy."));
 
-            await mainViewModel.JobManager.ExecuteAsync(job);
+            await jobManager.ExecuteAsync(job);
         }
     }
 }

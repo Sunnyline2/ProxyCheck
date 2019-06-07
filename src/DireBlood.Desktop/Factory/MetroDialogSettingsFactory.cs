@@ -7,7 +7,11 @@ namespace DireBlood.Factory
     {
         public static MetroDialogSettings Get()
         {
-            return new MetroDialogSettings { AffirmativeButtonText = Resources.AffirmativeButtonText, NegativeButtonText = Resources.NegativeButtonText };
+            return new MetroDialogSettings
+            {
+                AffirmativeButtonText = Resources.AffirmativeButtonText,
+                NegativeButtonText = Resources.NegativeButtonText
+            };
         }
     }
 }

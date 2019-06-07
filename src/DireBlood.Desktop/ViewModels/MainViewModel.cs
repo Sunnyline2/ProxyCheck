@@ -14,6 +14,7 @@ using DireBlood.Core.Services;
 using DireBlood.EventArgs;
 using DireBlood.Models;
 using DireBlood.Properties;
+using DireBlood.Repository;
 using DireBlood.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
@@ -22,7 +23,7 @@ using MahApps.Metro.Controls.Dialogs;
 
 namespace DireBlood.ViewModels
 {
-    
+
 
     public class MainViewModel : ViewModelBase
     {
@@ -31,28 +32,28 @@ namespace DireBlood.ViewModels
         private readonly IStatusService statusService;
 
 
-        private string _status;
-        private ProxyDetailsModel _selectedProxy;
-        private ObservableCollection<ProxyDetailsModel> _proxyViews = new ObservableCollection<ProxyDetailsModel>();
+        private string status;
+        private ProxyDetailsModel selectedProxy;
+        private ObservableCollection<ProxyDetailsModel> proxyViews = new ObservableCollection<ProxyDetailsModel>();
 
         public string Status
         {
-            get => _status;
-            set => Set(ref _status, value);
+            get => status;
+            set => Set(ref status, value);
         }
 
         public string Title => Resources.Title;
 
         public ProxyDetailsModel SelectedProxy
         {
-            get => _selectedProxy;
-            set => Set(ref _selectedProxy, value);
+            get => selectedProxy;
+            set => Set(ref selectedProxy, value);
         }
 
         public ObservableCollection<ProxyDetailsModel> ProxyViewModels
         {
-            get => _proxyViews;
-            set => Set(ref _proxyViews, value);
+            get => proxyViews;
+            set => Set(ref proxyViews, value);
         }
 
         #region Commands
@@ -61,17 +62,7 @@ namespace DireBlood.ViewModels
         public ICommand ShowInfoCommand { get; }
         public ICommand GetFromFileCommand { get; }
         public ICommand SaveToFileCommand { get; }
-
-        private ICommand _checkAllProxyCommand;
-
-        public ICommand CheckAllProxyCommand
-        {
-            get
-            {
-                return _checkAllProxyCommand ?? (_checkAllProxyCommand =
-                           new RelayCommand(async () => await CheckProxyAsync(ProxyViewModels, proxyService, 100), o => !jobManager.IsRunning));
-            }
-        }
+        public ICommand CheckAllProxyCommand { get; }
 
         private ICommand _removeDuplicationsCommand;
 
@@ -126,7 +117,7 @@ namespace DireBlood.ViewModels
             get
             {
                 return _checkNotRespondingProxyCommand ?? (_checkNotRespondingProxyCommand = new RelayCommand(async () =>
-                       await CheckProxyAsync(ProxyViewModels.Where(proxy => proxy.IsResponding == false).ToArray(), proxyService, 100), o => !jobManager.IsRunning));
+                       await CheckProxyAsync(ProxyViewModels.Where(proxy => proxy.IsResponding == false).ToArray(), 100), o => !jobManager.IsRunning));
             }
         }
 
@@ -137,7 +128,7 @@ namespace DireBlood.ViewModels
             get
             {
                 return _checkRespondingProxyCommand ?? (_checkRespondingProxyCommand = new RelayCommand(async () =>
-                       await CheckProxyAsync(ProxyViewModels.Where(proxy => proxy.IsResponding).ToArray(), proxyService, 100), o => !jobManager.IsRunning));
+                       await CheckProxyAsync(ProxyViewModels.Where(proxy => proxy.IsResponding).ToArray(), 100), o => !jobManager.IsRunning));
             }
         }
 
@@ -148,7 +139,7 @@ namespace DireBlood.ViewModels
             get
             {
                 return _checkSelectedProxyCommand ?? (_checkSelectedProxyCommand = new RelayCommand(async () =>
-                       await CheckProxyAsync(new List<ProxyDetailsModel> { SelectedProxy }, proxyService, 100), o => SelectedProxy != null && !jobManager.IsRunning));
+                       await CheckProxyAsync(new List<ProxyDetailsModel> { SelectedProxy }, 100), o => SelectedProxy != null && !jobManager.IsRunning));
             }
         }
 
@@ -165,71 +156,25 @@ namespace DireBlood.ViewModels
         #endregion
 
 
-        public MainViewModel(IJobManager jobManager, IProxyService proxyService, IDialogCoordinator dialogCoordinator)
+        public MainViewModel(IJobManager jobManager, IProxyService proxyService, IStatusService statusService,
+            IDialogCoordinator dialogCoordinator, IObservableRepository<ProxyDetailsModel> proxyRepository, IProxyCheckService proxyCheckService)
         {
             this.jobManager = jobManager;
             this.proxyService = proxyService;
+            this.statusService = statusService;
+
+            this.statusService.OnStatusChanged += status => Status = status;
+
+            this.ProxyViewModels = proxyRepository.GetAll();
 
             ShowGithubCommand = new ShowGithubCommand(this, dialogCoordinator).GetCommand();
             ShowInfoCommand = new ShowInfoCommand(this, dialogCoordinator).GetCommand();
-            GetFromFileCommand = new GetFromFileCommand(this).GetCommand();
-            SaveToFileCommand = new SaveToFileCommand(this).GetCommand();
+            GetFromFileCommand = new GetFromFileCommand(this, jobManager, proxyRepository, statusService).GetCommand();
+            SaveToFileCommand = new SaveToFileCommand(this, jobManager, statusService, proxyRepository).GetCommand();
+            CheckAllProxyCommand = new CheckProxyCollectionCommand(jobManager, proxyCheckService, ProxyViewModels).GetCommand();
         }
 
-        private async Task CheckProxyAsync(ICollection<ProxyDetailsModel> proxies, IProxyService proxyService, int threads)
-        {
-            var job = new JobAsync<ProxyCheckingEventArgs>((progress, args) => Task.Run(async () =>
-                {
-                    args.Count = proxies.Count;
-                    var semaphore = new SemaphoreSlim(threads);
-                    var tasks = new List<Task>();
-                    var sync = new object();
 
-                    for (int i = 0; i < proxies.Count; i++)
-                    {
-                        await semaphore.WaitAsync();
-                        args.Current = i;
-                        progress.Report(args);
-
-                        var proxy = proxies.ElementAt(i);
-                        proxy.Status = ProxyDetailsModel.ProxyStatus.InProcess;
-
-                        var task = Task.Run(async () =>
-                        {
-                            try
-                            {
-                                var proxyInfo = await proxyService.CheckProxyAsync(proxy.Host, proxy.Port,
-                                    TimeSpan.FromSeconds(5), CancellationToken.None);
-
-                                proxy.Update(proxyInfo, true);
-                                lock (sync)
-                                {
-                                    if (proxyInfo.IsResponding)
-                                    {
-                                        args.Good++;
-                                    }
-                                    else
-                                    {
-                                        args.Bad++;
-                                    }
-                                }
-                                proxy.Status = ProxyDetailsModel.ProxyStatus.Ready;
-                            }
-                            finally
-                            {
-                                semaphore.Release();
-                            }
-                        });
-                        tasks.Add(task);
-                    }
-
-                    Task.WaitAll(tasks.ToArray());
-                }))
-                .OnProgressChanged(args => SetStatus($"Sprawdzam proxy.. T:{args.Count} G:{args.Good} B:{args.Bad} L:{args.Count - args.Bad - args.Good} {args.GetPergentage()}%"))
-                .OnSuccess(args => SetStatus($"Zakończono sprawdzanie proxy.. T:{args.Count} G:{args.Good} B:{args.Bad}"));
-
-            await jobManager.ExecuteAsync(job);
-        }
 
 
         #region Helpers

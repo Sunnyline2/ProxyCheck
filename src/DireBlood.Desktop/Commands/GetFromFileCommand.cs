@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using DireBlood.Commands.Abstractions;
@@ -6,48 +6,28 @@ using DireBlood.Core;
 using DireBlood.Core.Job;
 using DireBlood.EventArgs;
 using DireBlood.Models;
+using DireBlood.Repository;
+using DireBlood.Services;
 using DireBlood.Utilities;
 using DireBlood.ViewModels;
 using Microsoft.Win32;
 
 namespace DireBlood.Commands
 {
-    public class ProxyRepository
-    {
-        private readonly ObservableCollection<ProxyDetailsModel> proxyDetailsModels = new ObservableCollection<ProxyDetailsModel>();
-
-
-        public ObservableCollection<ProxyDetailsModel> GetAll()
-        {
-            return proxyDetailsModels;
-        }
-
-        public void Add(ProxyDetailsModel proxyDetailsModel)
-        {
-            proxyDetailsModels.Add(proxyDetailsModel);
-        }
-
-        public void Remove(ProxyDetailsModel proxyDetailsModel)
-        {
-            proxyDetailsModels.Remove(proxyDetailsModel);
-        }
-    }
-
-    public interface IObservableRepository<T>
-    {
-        ObservableCollection<T> GetAll();
-
-        void Add(T item);
-        void Remove(T item);
-
-    }
-
-
     public class GetFromFileCommand : ICommandFactory
     {
         private readonly object context;
         private readonly IJobManager jobManager;
         private readonly IObservableRepository<ProxyDetailsModel> proxyDetailsModels;
+        private readonly IStatusService statusService;
+
+        public GetFromFileCommand(object context, IJobManager jobManager, IObservableRepository<ProxyDetailsModel> proxyDetailsModels, IStatusService statusService)
+        {
+            this.context = context;
+            this.jobManager = jobManager;
+            this.proxyDetailsModels = proxyDetailsModels;
+            this.statusService = statusService;
+        }
 
         private async Task GetFromFileAsync()
         {
@@ -70,7 +50,7 @@ namespace DireBlood.Commands
                     args.Count = streamReader.CountLines();
                     progress.Report(args);
 
-                    var collection = new ObservableCollection<ProxyDetailsModel>(mainViewModel.ProxyViewModels);
+                    var collection = new List<ProxyDetailsModel>();
 
                     for (int index = 0; !streamReader.EndOfStream; index++)
                     {
@@ -90,19 +70,19 @@ namespace DireBlood.Commands
                         progress.Report(args);
                     }
 
-                    mainViewModel.ProxyViewModels = collection;
+                    proxyDetailsModels.AddRange(collection);
                 }
             }))
-                .OnProgressChanged(args => mainViewModel.SetStatus($"Wczytywanie.. {args.Current}/{args.Count} {args.GetPergentage()}%"))
-                .OnSuccess(args => mainViewModel.SetStatus($"Pomyślnie wczytano {args.Count} adresów proxy."))
-                .OnException(exception => mainViewModel.SetStatus($"Wystąpił problem podczas wczytywania listy proxy. {exception.Message}"));
+                .OnProgressChanged(args => statusService.SetStatus($"Wczytywanie.. {args.Current}/{args.Count} {args.GetPergentage()}%"))
+                .OnSuccess(args => statusService.SetStatus($"Pomyślnie wczytano {args.Count} adresów proxy."))
+                .OnException(exception => statusService.SetStatus($"Wystąpił problem podczas wczytywania listy proxy. {exception.Message}"));
 
-            //await mainViewModel.JobManager.ExecuteAsync(job);
+            await jobManager.ExecuteAsync(job);
         }
 
         public RelayCommand GetCommand()
         {
-            return new RelayCommand(async () => await GetFromFileAsync(), o => !mainViewModel.JobManager.IsRunning);
+            return new RelayCommand(async () => await GetFromFileAsync(), o => !jobManager.IsRunning);
         }
     }
 }

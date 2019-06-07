@@ -15,11 +15,14 @@
 using CommonServiceLocator;
 using DireBlood.Core.Job;
 using DireBlood.Core.Services;
+using DireBlood.Models;
+using DireBlood.Repository;
 using DireBlood.Services;
+using DireBlood.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace DireBlood.ViewModels
+namespace DireBlood
 {
     /// <summary>
     /// This class contains static references to all the view models in the
@@ -38,7 +41,8 @@ namespace DireBlood.ViewModels
             SimpleIoc.Default.Register<IJobManager, JobManager>();
             SimpleIoc.Default.Register<IDialogCoordinator, DialogCoordinator>();
             SimpleIoc.Default.Register<IStatusService, StatusService>();
-
+            SimpleIoc.Default.Register<IObservableRepository<ProxyDetailsModel>, ProxyRepository>();
+            SimpleIoc.Default.Register<IProxyCheckService, ProxyCheckService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
         }

@@ -96,9 +96,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CheckProxyCollectionCommand.cs" />
     <Compile Include="Commands\CheckProxyCommand.cs" />
     <Compile Include="Commands\GetFromFileCommand.cs" />
     <Compile Include="Commands\Abstractions\ICommandFactory.cs" />
+    <Compile Include="Repository\IObservableRepository.cs" />
+    <Compile Include="Repository\ProxyRepository.cs" />
     <Compile Include="Commands\SaveToFileCommand.cs" />
     <Compile Include="Commands\ShowGithubCommand.cs" />
     <Compile Include="Commands\ShowInfoCommand.cs" />
@@ -106,6 +109,9 @@
     <Compile Include="EventArgs\FileWritingEventArgs.cs" />
     <Compile Include="EventArgs\ProxyCheckingEventArgs.cs" />
     <Compile Include="Factory\MetroDialogSettingsFactory.cs" />
+    <Compile Include="Services\IStatusService.cs" />
+    <Compile Include="Services\ProxyCheckService.cs" />
+    <Compile Include="Services\ReportService.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="App.xaml.cs">
@@ -114,7 +120,7 @@
     </Compile>
     <Compile Include="Models\ProxyDetailsModel.cs" />
     <Compile Include="Commands\Abstractions\RelayCommand.cs" />
-    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
