@@ -13,7 +13,11 @@
 */
 
 using CommonServiceLocator;
+using DireBlood.Core.Job;
+using DireBlood.Core.Services;
+using DireBlood.Services;
 using GalaSoft.MvvmLight.Ioc;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace DireBlood.ViewModels
 {
@@ -30,28 +34,17 @@ namespace DireBlood.ViewModels
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            ////if (ViewModelBase.IsInDesignModeStatic)
-            ////{
-            ////    // Create design time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-            ////}
-            ////else
-            ////{
-            ////    // Create run time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DataService>();
-            ////}
+            SimpleIoc.Default.Register<IProxyService, ProxyService>();
+            SimpleIoc.Default.Register<IJobManager, JobManager>();
+            SimpleIoc.Default.Register<IDialogCoordinator, DialogCoordinator>();
+            SimpleIoc.Default.Register<IStatusService, StatusService>();
+
 
             SimpleIoc.Default.Register<MainViewModel>();
         }
 
-        public MainViewModel Main
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
-        }
-        
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

@@ -35,7 +35,7 @@ namespace DireBlood.Commands
                 OverwritePrompt = true,
             };
 
-            var dialogResult = saveDialog.ShowDialog(mainViewModel.Window);
+            var dialogResult = saveDialog.ShowDialog();
             if (dialogResult == false)
                 return;
 

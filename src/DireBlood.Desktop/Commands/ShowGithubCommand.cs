@@ -10,11 +10,13 @@ namespace DireBlood.Commands
 {
     public class ShowGithubCommand : ICommandFactory
     {
-        private readonly MetroWindow metroWindow;
+        private readonly object context;
+        private readonly IDialogCoordinator dialogCoordinator;
 
-        public ShowGithubCommand(MetroWindow metroWindow)
+        public ShowGithubCommand(object context, IDialogCoordinator dialogCoordinator)
         {
-            this.metroWindow = metroWindow;
+            this.context = context;
+            this.dialogCoordinator = dialogCoordinator;
         }
 
         public RelayCommand GetCommand()
@@ -24,7 +26,7 @@ namespace DireBlood.Commands
 
         private async Task ShowGithubInfoAsync()
         {
-            var dialogResult = await metroWindow.ShowMessageAsync(Resources.Title, Resources.Redir, MessageDialogStyle.AffirmativeAndNegative, MetroDialogSettingsFactory.Get());
+            var dialogResult = await dialogCoordinator.ShowMessageAsync(context, Resources.Title, Resources.Redir, MessageDialogStyle.AffirmativeAndNegative, MetroDialogSettingsFactory.Get());
             if (dialogResult == MessageDialogResult.Affirmative)
             {
                 Process.Start("http://github.com/nickofc/");

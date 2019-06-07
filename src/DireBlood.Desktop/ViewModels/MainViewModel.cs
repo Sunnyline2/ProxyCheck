@@ -14,16 +14,23 @@ using DireBlood.Core.Services;
 using DireBlood.EventArgs;
 using DireBlood.Models;
 using DireBlood.Properties;
+using DireBlood.Services;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Views;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace DireBlood.ViewModels
 {
+    
+
     public class MainViewModel : ViewModelBase
     {
-        public readonly JobManager JobManager = new JobManager();
-        private readonly IProxyService _proxyService = new ProxyService();
-        private MetroWindow _window;
+        private readonly IJobManager jobManager;
+        private readonly IProxyService proxyService;
+        private readonly IStatusService statusService;
+
+
         private string _status;
         private ProxyDetailsModel _selectedProxy;
         private ObservableCollection<ProxyDetailsModel> _proxyViews = new ObservableCollection<ProxyDetailsModel>();
@@ -41,8 +48,6 @@ namespace DireBlood.ViewModels
             get => _selectedProxy;
             set => Set(ref _selectedProxy, value);
         }
-
-        public MetroWindow Window => _window ?? (_window = Application.Current.MainWindow as MetroWindow);
 
         public ObservableCollection<ProxyDetailsModel> ProxyViewModels
         {
@@ -64,7 +69,7 @@ namespace DireBlood.ViewModels
             get
             {
                 return _checkAllProxyCommand ?? (_checkAllProxyCommand =
-                           new RelayCommand(async () => await CheckProxyAsync(ProxyViewModels, _proxyService, 100), o => !JobManager.IsRunning));
+                           new RelayCommand(async () => await CheckProxyAsync(ProxyViewModels, proxyService, 100), o => !jobManager.IsRunning));
             }
         }
 
@@ -80,7 +85,7 @@ namespace DireBlood.ViewModels
                            var count = ProxyViewModels.Count;
                            ProxyViewModels = new ObservableCollection<ProxyDetailsModel>(ProxyViewModels.Distinct());
                            SetStatus($"Pomyślnie usunięto {count - ProxyViewModels.Count} adresy proxy.");
-                       }, o => !JobManager.IsRunning));
+                       }, o => !jobManager.IsRunning));
             }
         }
 
@@ -95,7 +100,7 @@ namespace DireBlood.ViewModels
                     var count = ProxyViewModels.Count;
                     ProxyViewModels = new ObservableCollection<ProxyDetailsModel>(ProxyViewModels.Where(proxy => proxy.IsResponding));
                     SetStatus($"Pomyślnie usunięto {count - ProxyViewModels.Count} adresy proxy.");
-                }, o => !JobManager.IsRunning));
+                }, o => !jobManager.IsRunning));
             }
         }
 
@@ -108,9 +113,9 @@ namespace DireBlood.ViewModels
                 return _removeNotCheckedCommand ?? (_removeNotCheckedCommand = new RelayCommand(() =>
                 {
                     var count = ProxyViewModels.Count;
-                    ProxyViewModels = new ObservableCollection<ProxyDetailsModel>(ProxyViewModels.Where(proxy => proxy.WasVeryfied));
+                    ProxyViewModels = new ObservableCollection<ProxyDetailsModel>(ProxyViewModels.Where(proxy => proxy.WasVerified));
                     SetStatus($"Pomyślnie usunięto {count - ProxyViewModels.Count} adresy proxy.");
-                }, o => !JobManager.IsRunning));
+                }, o => !jobManager.IsRunning));
             }
         }
 
@@ -121,7 +126,7 @@ namespace DireBlood.ViewModels
             get
             {
                 return _checkNotRespondingProxyCommand ?? (_checkNotRespondingProxyCommand = new RelayCommand(async () =>
-                       await CheckProxyAsync(ProxyViewModels.Where(proxy => proxy.IsResponding == false).ToArray(), _proxyService, 100), o => !JobManager.IsRunning));
+                       await CheckProxyAsync(ProxyViewModels.Where(proxy => proxy.IsResponding == false).ToArray(), proxyService, 100), o => !jobManager.IsRunning));
             }
         }
 
@@ -132,7 +137,7 @@ namespace DireBlood.ViewModels
             get
             {
                 return _checkRespondingProxyCommand ?? (_checkRespondingProxyCommand = new RelayCommand(async () =>
-                       await CheckProxyAsync(ProxyViewModels.Where(proxy => proxy.IsResponding).ToArray(), _proxyService, 100), o => !JobManager.IsRunning));
+                       await CheckProxyAsync(ProxyViewModels.Where(proxy => proxy.IsResponding).ToArray(), proxyService, 100), o => !jobManager.IsRunning));
             }
         }
 
@@ -143,7 +148,7 @@ namespace DireBlood.ViewModels
             get
             {
                 return _checkSelectedProxyCommand ?? (_checkSelectedProxyCommand = new RelayCommand(async () =>
-                       await CheckProxyAsync(new List<ProxyDetailsModel> { SelectedProxy }, _proxyService, 100), o => SelectedProxy != null && !JobManager.IsRunning));
+                       await CheckProxyAsync(new List<ProxyDetailsModel> { SelectedProxy }, proxyService, 100), o => SelectedProxy != null && !jobManager.IsRunning));
             }
         }
 
@@ -153,34 +158,20 @@ namespace DireBlood.ViewModels
         {
             get
             {
-                return _removeSelectedProxyCommand ?? (_removeSelectedProxyCommand = new RelayCommand(() => ProxyViewModels.Remove(SelectedProxy), o => SelectedProxy != null && !JobManager.IsRunning));
+                return _removeSelectedProxyCommand ?? (_removeSelectedProxyCommand = new RelayCommand(() => ProxyViewModels.Remove(SelectedProxy), o => SelectedProxy != null && !jobManager.IsRunning));
             }
         }
 
         #endregion
 
 
-        public MainViewModel()
+        public MainViewModel(IJobManager jobManager, IProxyService proxyService, IDialogCoordinator dialogCoordinator)
         {
-            if (IsInDesignMode)
-            {
-                var models = new List<ProxyDetailsModel>
-                {
-                    new ProxyDetailsModel {Host = "35.162.160.108", Port = 8080},
-                    new ProxyDetailsModel {Host = "198.181.36.100", Port = 8080},
-                    new ProxyDetailsModel {Host = "54.152.198.150", Port = 3128},
-                    new ProxyDetailsModel {Host = "35.162.160.108", Port = 8080},
-                    new ProxyDetailsModel {Host = "35.162.160.108", Port = 8080}
-                };
+            this.jobManager = jobManager;
+            this.proxyService = proxyService;
 
-                foreach (var model in models)
-                {
-                    ProxyViewModels.Add(model);
-                }
-            }
-
-            ShowGithubCommand = new ShowGithubCommand(Window).GetCommand();
-            ShowInfoCommand = new ShowInfoCommand(Window).GetCommand();
+            ShowGithubCommand = new ShowGithubCommand(this, dialogCoordinator).GetCommand();
+            ShowInfoCommand = new ShowInfoCommand(this, dialogCoordinator).GetCommand();
             GetFromFileCommand = new GetFromFileCommand(this).GetCommand();
             SaveToFileCommand = new SaveToFileCommand(this).GetCommand();
         }
@@ -237,7 +228,7 @@ namespace DireBlood.ViewModels
                 .OnProgressChanged(args => SetStatus($"Sprawdzam proxy.. T:{args.Count} G:{args.Good} B:{args.Bad} L:{args.Count - args.Bad - args.Good} {args.GetPergentage()}%"))
                 .OnSuccess(args => SetStatus($"Zakończono sprawdzanie proxy.. T:{args.Count} G:{args.Good} B:{args.Bad}"));
 
-            await JobManager.ExecuteAsync(job);
+            await jobManager.ExecuteAsync(job);
         }
 
 

@@ -54,20 +54,20 @@ namespace DireBlood.Models
             set => Set(ref _isResponding, value);
         }
 
-        private bool _wasVeryfied;
+        private bool _wasVerified;
 
-        public bool WasVeryfied
+        public bool WasVerified
         {
-            get => _wasVeryfied;
-            set => Set(ref _wasVeryfied, value);
+            get => _wasVerified;
+            set => Set(ref _wasVerified, value);
         }
 
-        private DateTime? _wasVeryfiedAt;
+        private DateTime? _wasVerifiedAt;
 
-        public DateTime? WasVeryfiedAt
+        public DateTime? WasVerifiedAt
         {
-            get => _wasVeryfiedAt;
-            set => Set(ref _wasVeryfiedAt, value);
+            get => _wasVerifiedAt;
+            set => Set(ref _wasVerifiedAt, value);
         }
 
         private ProxyStatus _status;
@@ -87,8 +87,8 @@ namespace DireBlood.Models
 
             if (wasVeryfied)
             {
-                WasVeryfied = true;
-                WasVeryfiedAt = DateTime.Now;
+                WasVerified = true;
+                WasVerifiedAt = DateTime.Now;
             }
 
 

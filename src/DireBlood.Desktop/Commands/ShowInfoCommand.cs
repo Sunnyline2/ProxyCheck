@@ -6,18 +6,20 @@ using MahApps.Metro.Controls.Dialogs;
 
 namespace DireBlood.Commands
 {
-   public class ShowInfoCommand : ICommandFactory
+    public class ShowInfoCommand : ICommandFactory
     {
-        private readonly MetroWindow _metroWindow;
+        private readonly object context;
+        private readonly IDialogCoordinator dialogCoordinator;
 
-        public ShowInfoCommand(MetroWindow metroWindow)
+        public ShowInfoCommand(object context, IDialogCoordinator dialogCoordinator)
         {
-            _metroWindow = metroWindow;
+            this.context = context;
+            this.dialogCoordinator = dialogCoordinator;
         }
 
         private async Task ShowInfoAsync()
         {
-            await _metroWindow.ShowMessageAsync(Resources.Title, Resources.About);
+            await dialogCoordinator.ShowMessageAsync(context, Resources.Title, Resources.About);
         }
 
         public RelayCommand GetCommand()

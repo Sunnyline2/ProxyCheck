@@ -4,11 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    controls:DialogParticipation.Register="{Binding}"
     x:Class="DireBlood.Views.MainView"
+    xmlns:prop="clr-namespace:DireBlood.Properties"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     BorderBrush="Red"
-    Title="{Binding Title}" Height="289.865" Width="561.225" WindowStyle="ToolWindow" BorderThickness="1">
+    Title="{Binding Title}" Height="289.865" Width="695.225" WindowStyle="ToolWindow" BorderThickness="1">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <StatusBar Background="Transparent">
@@ -28,7 +31,7 @@
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="PLIK">
+            <MenuItem Header="{x:Static prop:Resources.MainWindowFile}">
                 <MenuItem Header="Wczytaj z pliku" Command="{Binding GetFromFileCommand, Mode=OneWay}" />
                 <MenuItem Header="Zapisz do pliku" Command="{Binding SaveToFileCommand, Mode=OneWay}" />
             </MenuItem>
@@ -102,7 +105,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding WasVeryfiedAt}" Header="data sprawdzenia" />
+                    <GridViewColumn DisplayMemberBinding="{Binding WasVerifiedAt}" Header="data sprawdzenia" />
 
                     <GridViewColumn Header="status">
                         <GridViewColumn.CellTemplate>

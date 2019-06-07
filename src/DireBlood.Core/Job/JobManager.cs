@@ -3,7 +3,14 @@ using System.Threading.Tasks;
 
 namespace DireBlood.Core.Job
 {
-    public class JobManager
+    public interface IJobManager
+    {
+        bool IsRunning { get; }
+        Task ExecuteAsync<T>(JobAsync<T> job) where T : class, new();
+        void Execute<T>(Job<T> job) where T : class, new();
+    }
+
+    public class JobManager : IJobManager
     {
         private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1);
 

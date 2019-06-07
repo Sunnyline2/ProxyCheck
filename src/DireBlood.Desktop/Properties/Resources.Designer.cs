@@ -22,7 +22,7 @@ namespace DireBlood.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace DireBlood.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DireBlood.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace DireBlood.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace DireBlood.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY.
         /// </summary>
-        internal static string About {
+        public static string About {
             get {
                 return ResourceManager.GetString("About", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace DireBlood.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Tak.
         /// </summary>
-        internal static string AffirmativeButtonText {
+        public static string AffirmativeButtonText {
             get {
                 return ResourceManager.GetString("AffirmativeButtonText", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace DireBlood.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PLIK.
         /// </summary>
-        internal static string MainWindowFile {
+        public static string MainWindowFile {
             get {
                 return ResourceManager.GetString("MainWindowFile", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace DireBlood.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Nie.
         /// </summary>
-        internal static string NegativeButtonText {
+        public static string NegativeButtonText {
             get {
                 return ResourceManager.GetString("NegativeButtonText", resourceCulture);
             }
@@ -100,7 +100,7 @@ namespace DireBlood.Properties {
         ///   Looks up a localized string similar to Zostaniesz przeniesiony na mojego githuba. 
         ///Czy chcesz kontynuować?.
         /// </summary>
-        internal static string Redir {
+        public static string Redir {
             get {
                 return ResourceManager.GetString("Redir", resourceCulture);
             }
@@ -109,7 +109,7 @@ namespace DireBlood.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DireBlood.
         /// </summary>
-        internal static string Title {
+        public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
             }
