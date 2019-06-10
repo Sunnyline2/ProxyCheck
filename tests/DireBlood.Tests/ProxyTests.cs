@@ -7,7 +7,6 @@ namespace DireBlood.Tests
         [Fact]
         public void Func()
         {
-
         }
     }
 }

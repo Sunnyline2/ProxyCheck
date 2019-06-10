@@ -1,7 +1,7 @@
 ﻿using DireBlood.Properties;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace DireBlood.Factory
+namespace DireBlood.Core.Factory
 {
     public static class MetroDialogSettingsFactory
     {

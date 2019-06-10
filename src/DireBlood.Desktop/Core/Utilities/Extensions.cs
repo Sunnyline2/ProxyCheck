@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace DireBlood.Utilities
+namespace DireBlood.Core.Utilities
 {
     public static class Extensions
     {

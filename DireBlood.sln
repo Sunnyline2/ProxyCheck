@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D67921C4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D88E71FE-03AB-40B1-BEEA-4A2EF53BD0F7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DireBlood.Core", "src\DireBlood.Core\DireBlood.Core.csproj", "{ED860D75-6F91-4940-A139-CF41B5292F7E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DireBlood.Desktop", "src\DireBlood.Desktop\DireBlood.Desktop.csproj", "{8F2494AB-E16C-4765-89F0-EC940BDE16FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DireBlood.Tests", "tests\DireBlood.Tests\DireBlood.Tests.csproj", "{0D6A03F3-C31F-49FA-9169-BB56142D0152}"
@@ -21,14 +19,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{ED860D75-6F91-4940-A139-CF41B5292F7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED860D75-6F91-4940-A139-CF41B5292F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED860D75-6F91-4940-A139-CF41B5292F7E}.Debug|x64.ActiveCfg = Debug|x64
-		{ED860D75-6F91-4940-A139-CF41B5292F7E}.Debug|x64.Build.0 = Debug|x64
-		{ED860D75-6F91-4940-A139-CF41B5292F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED860D75-6F91-4940-A139-CF41B5292F7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED860D75-6F91-4940-A139-CF41B5292F7E}.Release|x64.ActiveCfg = Release|x64
-		{ED860D75-6F91-4940-A139-CF41B5292F7E}.Release|x64.Build.0 = Release|x64
 		{8F2494AB-E16C-4765-89F0-EC940BDE16FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F2494AB-E16C-4765-89F0-EC940BDE16FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F2494AB-E16C-4765-89F0-EC940BDE16FE}.Debug|x64.ActiveCfg = Debug|x64
@@ -50,7 +40,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{ED860D75-6F91-4940-A139-CF41B5292F7E} = {D88E71FE-03AB-40B1-BEEA-4A2EF53BD0F7}
 		{8F2494AB-E16C-4765-89F0-EC940BDE16FE} = {D88E71FE-03AB-40B1-BEEA-4A2EF53BD0F7}
 		{0D6A03F3-C31F-49FA-9169-BB56142D0152} = {D67921C4-0BAB-4F81-A8B1-6F44BC3FB036}
 	EndGlobalSection

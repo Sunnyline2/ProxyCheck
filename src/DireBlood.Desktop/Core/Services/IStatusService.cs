@@ -1,4 +1,4 @@
-﻿namespace DireBlood.Services
+﻿namespace DireBlood.Core.Services
 {
     public interface IStatusService
     {

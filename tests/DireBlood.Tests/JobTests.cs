@@ -1,13 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DireBlood.Core.Job;
 using Xunit;
 
 namespace DireBlood.Tests
 {
     public class JobTests
     {
+        [Fact]
+        public async Task Should_Handle_Exception()
+        {
+            var exHandled = false;
+
+            await new JobAsync<ProgressEventArgs>((progress, args) => throw new Exception())
+                .OnException(exception => exHandled = true)
+                .ExecuteAsync();
+
+            Assert.True(exHandled);
+        }
+
         [Fact]
         public void Should_Successfully_Complete_Job()
         {
@@ -25,48 +36,21 @@ namespace DireBlood.Tests
         }
 
         [Fact]
-        public void Should_Trigger_OnPropertyChanged()
+        public async Task Should_Successfuly_Complete_JobAsync()
         {
             var max = 100;
             var index = 0;
             var isCompleted = false;
-
-            new Job<ProgressEventArgs>((progress, args) =>
-            {
-                args.Max = 100;
-                progress.Report(args);
-
-                for (var i = 1; i <= max; i++)
-                {
-                    index = i;
-                    args.Current = i;
-                    progress.Report(args);
-                }
-
-                isCompleted = true;
-            }).OnProgressChanged(args =>  Assert.True(index == args.Current))
-              .OnSuccess(args => isCompleted = true).Execute();
-
-            Assert.True(isCompleted);
-            Assert.True(max == index);
-        }
-
-        [Fact]
-        public async Task Should_Successfuly_Complete_JobAsync()
-        {
-            int max = 100;
-            int index = 0;
-            bool isCompleted = false;       
-            bool onProgressChangedCalled = false;
-            bool onSuccessCalled = false;
-            int numberOfCalls = 0;
+            var onProgressChangedCalled = false;
+            var onSuccessCalled = false;
+            var numberOfCalls = 0;
 
             var order = new Stack<string>();
             var job = new JobAsync<ProgressEventArgs>((progress, args) =>
             {
                 return Task.Run(async () =>
                 {
-                    for (int i = 1; i <= max; i++)
+                    for (var i = 1; i <= max; i++)
                     {
                         index = i;
                         args.Current = i;
@@ -84,6 +68,7 @@ namespace DireBlood.Tests
                     onProgressChangedCalled = true;
                     order.Push("onProgressChanged");
                 }
+
                 numberOfCalls++;
 
                 Assert.True(args.Current == index);
@@ -111,25 +96,37 @@ namespace DireBlood.Tests
         }
 
         [Fact]
-        public async Task Should_Handle_Exception()
+        public void Should_Trigger_OnPropertyChanged()
         {
-            var exHandled = false;
+            var max = 100;
+            var index = 0;
+            var isCompleted = false;
 
-            await new JobAsync<ProgressEventArgs>((progress, args) => throw new Exception())
-                .OnException(exception => exHandled = true)
-                .ExecuteAsync();
+            new Job<ProgressEventArgs>((progress, args) =>
+                {
+                    args.Max = 100;
+                    progress.Report(args);
 
-            Assert.True(exHandled);
+                    for (var i = 1; i <= max; i++)
+                    {
+                        index = i;
+                        args.Current = i;
+                        progress.Report(args);
+                    }
+
+                    isCompleted = true;
+                }).OnProgressChanged(args => Assert.True(index == args.Current))
+                .OnSuccess(args => isCompleted = true).Execute();
+
+            Assert.True(isCompleted);
+            Assert.True(max == index);
         }
 
         [Fact]
         public void Shouldnt_Execute_Job()
         {
             var executed = false;
-            var job = new JobAsync<EventArgs>((progress, args) => Task.Run(() =>
-            {
-                executed = true;
-            }));
+            var job = new JobAsync<EventArgs>((progress, args) => Task.Run(() => { executed = true; }));
             Assert.False(executed);
         }
     }

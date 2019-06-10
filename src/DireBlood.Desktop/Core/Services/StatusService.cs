@@ -1,4 +1,4 @@
-﻿namespace DireBlood.Services
+﻿namespace DireBlood.Core.Services
 {
     public class StatusService : IStatusService
     {
@@ -6,7 +6,7 @@
 
         public void SetStatus(string status)
         {
-            OnStatusChanged.Invoke(status);    
+            OnStatusChanged.Invoke(status);
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using DireBlood.Commands.Abstractions;
+using System.Windows.Input;
+using DireBlood.Core.Abstractions;
 using DireBlood.Properties;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
 namespace DireBlood.Commands
@@ -17,14 +17,14 @@ namespace DireBlood.Commands
             this.dialogCoordinator = dialogCoordinator;
         }
 
+        public ICommand Get()
+        {
+            return new RelayCommand(async () => await ShowInfoAsync());
+        }
+
         private async Task ShowInfoAsync()
         {
             await dialogCoordinator.ShowMessageAsync(context, Resources.Title, Resources.About);
-        }
-
-        public RelayCommand GetCommand()
-        {
-            return new RelayCommand(async () => await ShowInfoAsync());
         }
     }
 }

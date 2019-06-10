@@ -1,13 +1,9 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using DireBlood.Commands.Abstractions;
-using DireBlood.Core.Job;
+using DireBlood.Core.Abstractions;
+using DireBlood.Core.ObservableDataProviders;
+using DireBlood.Core.Services;
 using DireBlood.EventArgs;
-using DireBlood.Models;
-using DireBlood.Repository;
-using DireBlood.Services;
-using DireBlood.ViewModels;
 using Microsoft.Win32;
 
 namespace DireBlood.Commands
@@ -15,43 +11,37 @@ namespace DireBlood.Commands
     public class SaveToFileCommand : ICommandFactory
     {
         private readonly object context;
-        private readonly IJobManager jobManager;
+        private readonly IJobService jobService;
+        private readonly IObservableDataProvider<ProxyDetailsModel> proxyRepository;
         private readonly IStatusService statusService;
-        private readonly IObservableRepository<ProxyDetailsModel> proxyRepository;
 
-        public SaveToFileCommand(object context, IJobManager jobManager, IStatusService statusService, IObservableRepository<ProxyDetailsModel> proxyRepository)
+        public SaveToFileCommand(object context, IJobService jobService, IStatusService statusService,
+            IObservableDataProvider<ProxyDetailsModel> proxyRepository)
         {
             this.context = context;
-            this.jobManager = jobManager;
+            this.jobService = jobService;
             this.statusService = statusService;
             this.proxyRepository = proxyRepository;
         }
 
         public RelayCommand GetCommand()
         {
-            return new RelayCommand(async () => await SaveToFileAsync(), o => !jobManager.IsRunning);    
+            return new RelayCommand(async () => await SaveToFileAsync(), o => !jobService.IsRunning);
         }
 
         private async Task SaveToFileAsync()
         {
-            if (!proxyRepository.GetAll().Any())
-            {
-                return;
-            }
+            if (!proxyRepository.GetAll().Any()) return;
 
             var saveDialog = new SaveFileDialog
             {
                 Title = "Gdzie mam zapisać proxy?",
                 DefaultExt = "plik tekstowy (.txt)|*.txt",
-                OverwritePrompt = true,
+                OverwritePrompt = true
             };
 
             var dialogResult = saveDialog.ShowDialog();
-            if (dialogResult == false)
-            {
-                return;
-
-            }
+            if (dialogResult == false) return;
 
             var job = new JobAsync<FileWritingEventArgs>((progress, args) => Task.Run(async () =>
                 {
@@ -61,17 +51,18 @@ namespace DireBlood.Commands
                     using (var fileStream = new FileStream(saveDialog.FileName, FileMode.Create))
                     using (var streamWriter = new StreamWriter(fileStream))
                     {
-                        for (int i = 0; i < args.Count; i++)
+                        for (var i = 0; i < args.Count; i++)
                         {
                             var proxy = proxyRepository.GetAll().ElementAt(i);
                             await streamWriter.WriteLineAsync($"{proxy.Host}:{proxy.Port}");
                         }
                     }
                 }))
-                .OnProgressChanged(args => statusService.SetStatus($"Trwa zapisywanie.. {args.Current}/{args.Count} {args.GetPergentage()}%"))
+                .OnProgressChanged(args =>
+                    statusService.SetStatus($"Trwa zapisywanie.. {args.Current}/{args.Count} {args.GetPercentage()}%"))
                 .OnSuccess(args => statusService.SetStatus($"Pomyślnie zapisano {args.Count} adresów proxy."));
 
-            await jobManager.ExecuteAsync(job);
+            await jobService.ExecuteAsync(job);
         }
     }
 }

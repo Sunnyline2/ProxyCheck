@@ -21,15 +21,14 @@ namespace DireBlood.Core.Services
             for (var i = 0; i < matches.Count; i++)
             {
                 var match = matches[i];
-                if (match.Groups[1].Value == name)
-                {
-                    return match.Groups[2].Value;
-                }
+                if (match.Groups[1].Value == name) return match.Groups[2].Value;
             }
+
             return string.Empty;
         }
 
-        public async Task<IProxyStatus> CheckProxyAsync(string host, ushort port, TimeSpan timeout, CancellationToken cancellationToken)
+        public async Task<IProxyStatus> CheckProxyAsync(string host, ushort port, TimeSpan timeout,
+            CancellationToken cancellationToken)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
             if (port <= 0) throw new ArgumentOutOfRangeException(nameof(port));
@@ -70,10 +69,9 @@ namespace DireBlood.Core.Services
             catch (Exception ex)
             {
                 if (ex is TaskCanceledException canceledException)
-                {
                     if (canceledException.CancellationToken.IsCancellationRequested)
                         throw;
-                }
+
                 return new ProxyStatus(host, port) {IsResponding = false};
             }
         }

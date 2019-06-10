@@ -49,7 +49,8 @@
         <ListView DockPanel.Dock="Top" VirtualizingPanel.IsVirtualizing="True"
                   ScrollViewer.CanContentScroll="True"
                   ItemsSource="{Binding ProxyViewModels, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedItem="{Binding SelectedProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderBrush="{x:Null}">
+                  SelectedItem="{Binding SelectedProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  BorderBrush="{x:Null}">
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Command="{Binding CheckSelectedProxyCommand, Mode=OneWay}" Header="Sprawdz wybrane proxy" />
@@ -62,20 +63,23 @@
                     <GridViewColumn DisplayMemberBinding="{Binding Port}" Header="port" />
                     <GridViewColumn DisplayMemberBinding="{Binding Country}" Header="kraj" />
                     <GridViewColumn DisplayMemberBinding="{Binding ProxyType}" Header="typ proxy" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Delay}" Header="opóźnienie"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Delay}" Header="opóźnienie" />
                     <GridViewColumn Header="sprawne">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Height="10" >
+                                <Image Height="10">
                                     <Image.Style>
                                         <Style TargetType="{x:Type Image}">
-                                            <Setter Property="Source" Value="/DireBlood;component/Icons/checked-green.png"/>
+                                            <Setter Property="Source"
+                                                    Value="/DireBlood;component/Icons/checked-green.png" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsResponding}" Value="True">
-                                                    <Setter Property="Source" Value="/DireBlood;component/Icons/checked-green.png"/>
+                                                    <Setter Property="Source"
+                                                            Value="/DireBlood;component/Icons/checked-green.png" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsResponding}" Value="False">
-                                                    <Setter Property="Source" Value="/DireBlood;component/Icons/unchecked-red.png"/>
+                                                    <Setter Property="Source"
+                                                            Value="/DireBlood;component/Icons/unchecked-red.png" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -87,16 +91,19 @@
                     <GridViewColumn Header="sprawdzone">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Height="10" >
+                                <Image Height="10">
                                     <Image.Style>
                                         <Style TargetType="{x:Type Image}">
-                                            <Setter Property="Source" Value="/DireBlood;component/Icons/checked-green.png"/>
+                                            <Setter Property="Source"
+                                                    Value="/DireBlood;component/Icons/checked-green.png" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding WasVeryfied}" Value="True">
-                                                    <Setter Property="Source" Value="/DireBlood;component/Icons/checked-green.png"/>
+                                                    <Setter Property="Source"
+                                                            Value="/DireBlood;component/Icons/checked-green.png" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding WasVeryfied}" Value="False">
-                                                    <Setter Property="Source" Value="/DireBlood;component/Icons/unchecked-red.png"/>
+                                                    <Setter Property="Source"
+                                                            Value="/DireBlood;component/Icons/unchecked-red.png" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -110,16 +117,16 @@
                     <GridViewColumn Header="status">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <controls:MetroProgressBar Foreground="Red" Value="100" >
+                                <controls:MetroProgressBar Foreground="Red" Value="100">
                                     <ProgressBar.Style>
                                         <Style TargetType="{x:Type controls:MetroProgressBar}">
-                                            <Setter Property="IsIndeterminate" Value="False"/>
+                                            <Setter Property="IsIndeterminate" Value="False" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Path=Status}" Value="InProcess">
-                                                    <Setter Property="IsIndeterminate" Value="True"></Setter>
+                                                    <Setter Property="IsIndeterminate" Value="True" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Path=Status}" Value="Ready">
-                                                    <Setter Property="IsIndeterminate" Value="False"></Setter>
+                                                    <Setter Property="IsIndeterminate" Value="False" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

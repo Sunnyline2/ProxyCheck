@@ -3,5 +3,6 @@
     public enum ProxyType
     {
         Anonymous,
+        Elite,
     }
 }

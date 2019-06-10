@@ -5,72 +5,72 @@ namespace DireBlood.Core.Job
     public class Job<T> where T : class, new()
     {
         public readonly T EventArgs = new T();
-        private readonly Progress<T> _progress = new Progress<T>();
-        private readonly Action<IProgress<T>, T> _action;
+        private readonly Progress<T> progress = new Progress<T>();
+        private readonly Action<IProgress<T>, T> action;
 
-        private Action<T> _onProgressChanged;
-        private Action<Exception> _onException;
-        private Action _onBeforeExecution;
-        private Action<T> _onSuccess;
+        private Action<T> onProgressChanged;
+        private Action<Exception> onException;
+        private Action onBeforeExecution;
+        private Action<T> onSuccess;
 
         public Job(Action<IProgress<T>, T> action)
         {
-            _action = action;
+            this.action = action;
         }
 
         public Job<T> OnProgressChanged(Action<T> action)
         {
-            _onProgressChanged = action;
+            onProgressChanged = action;
             return this;
         }
 
         public Job<T> OnException(Action<Exception> action)
         {
-            _onException = action;
+            onException = action;
             return this;
         }
 
         public Job<T> OnBeforeExecute(Action action)
         {
-            _onBeforeExecution = action;
+            onBeforeExecution = action;
             return this;
         }
 
         public Job<T> OnSuccess(Action<T> action)
         {
-            _onSuccess = action;
+            onSuccess = action;
             return this;
         }
 
         public void Execute()
         {
-            _progress.ProgressChanged += HandleProgressChanged;
+            progress.ProgressChanged += HandleProgressChanged;
             try
             {
-                if (_onBeforeExecution != null)
-                    _onBeforeExecution();
+                if (onBeforeExecution != null)
+                    onBeforeExecution();
 
-                _action(_progress, EventArgs);
+                action(progress, EventArgs);
 
-                if (_onSuccess != null)
-                    _onSuccess(EventArgs);
+                if (onSuccess != null)
+                    onSuccess(EventArgs);
             }
             catch (Exception exception)
             {
-                if (_onException == null)
+                if (onException == null)
                     throw;
-                _onException(exception);
+                onException(exception);
             }
             finally
             {
-                _progress.ProgressChanged -= HandleProgressChanged;
+                progress.ProgressChanged -= HandleProgressChanged;
             }
         }
 
         private void HandleProgressChanged(object sender, T args)
         {
-            if (_onProgressChanged != null)
-                _onProgressChanged(args);
+            if (onProgressChanged != null)
+                onProgressChanged(args);
         }
     }
 }

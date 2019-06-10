@@ -10,7 +10,7 @@ namespace DireBlood.EventArgs
         public int Good { get; set; }
         public int Bad { get; set; }
 
-        public int GetPergentage()
+        public int GetPercentage()
         {
             return (int) Math.Round((double) (100 * Current) / Count);
         }

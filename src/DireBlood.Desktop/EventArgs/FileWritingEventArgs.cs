@@ -2,14 +2,8 @@
 
 namespace DireBlood.EventArgs
 {
-    public class FileWritingEventArgs : System.EventArgs
+    public class FileWritingEventArgs : FileEventArgsBase
     {
-        public int Current { get; set; }
-        public int Count { get; set; }
 
-        public int GetPergentage()
-        {
-            return (int) Math.Round((double) (100 * Current) / Count);
-        }
     }
 }

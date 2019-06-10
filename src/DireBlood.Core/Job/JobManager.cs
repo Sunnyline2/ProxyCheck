@@ -12,13 +12,13 @@ namespace DireBlood.Core.Job
 
     public class JobManager : IJobManager
     {
-        private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
 
         public bool IsRunning { get; private set; }
- 
+
         public async Task ExecuteAsync<T>(JobAsync<T> job) where T : class, new()
         {
-            await _semaphoreSlim.WaitAsync();
+            await semaphoreSlim.WaitAsync();
             try
             {
                 IsRunning = true;
@@ -27,13 +27,13 @@ namespace DireBlood.Core.Job
             finally
             {
                 IsRunning = false;
-                _semaphoreSlim.Release();
+                semaphoreSlim.Release();
             }
         }
 
         public void Execute<T>(Job<T> job) where T : class, new()
         {
-            _semaphoreSlim.Wait();
+            semaphoreSlim.Wait();
             try
             {
                 IsRunning = true;
@@ -42,7 +42,7 @@ namespace DireBlood.Core.Job
             finally
             {
                 IsRunning = false;
-                _semaphoreSlim.Release();
+                semaphoreSlim.Release();
             }
         }
     }
