@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using DireBlood.Core.Jobs;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace CheckProxy.Desktop.Utilities
 {

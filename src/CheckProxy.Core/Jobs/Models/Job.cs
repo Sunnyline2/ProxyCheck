@@ -1,14 +1,16 @@
 ﻿using CheckProxy.Desktop;
+using DireBlood.Core.Jobs.Services;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DireBlood.Core.Jobs
 {
-    public abstract class Job : BaseNotifyPropertyChanged
+    public class Job : BaseViewModel
     {
         private string title;
 
-        public string Title 
+        public string Title
         {
             get => title;
             set => Set(ref title, value);
@@ -30,6 +32,18 @@ namespace DireBlood.Core.Jobs
             set => Set(ref status, value);
         }
 
-        public abstract Task RunAsync(CancellationToken cancellationToken = default);
+        private readonly Func<Job, CancellationToken, Task> func;
+
+        public Job(Func<Job, CancellationToken, Task> func)
+        {
+            Guard.Against.Null(func, nameof(func));
+
+            this.func = func;
+        }
+
+        public async Task Execute(CancellationToken token = default)
+        {
+            await func(this, token).ConfigureAwait(false);
+        }
     }
 }

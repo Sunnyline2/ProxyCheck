@@ -414,22 +414,6 @@ namespace CheckProxy.Desktop.ViewModels
 
         #region Helpers
 
-        public void SetStatus(string value) => SafeInvoke(() => Status = value);
-
-        public void SafeInvoke(Action action)
-        {
-            if (Application.Current != null)
-            {
-                if (Application.Current.Dispatcher.CheckAccess())
-                {
-                    action();
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, action);
-                }
-            }
-        }
 
         #endregion
     }

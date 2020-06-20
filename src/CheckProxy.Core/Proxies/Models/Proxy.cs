@@ -4,13 +4,13 @@ using System.Linq;
 using System.Net;
 using CheckProxy.Desktop;
 using CheckProxy.Desktop.Models;
+using DireBlood.Core.Jobs.Services;
 
 namespace CheckProxy.Core.Proxy
 {
-    public class Proxy : BaseNotifyPropertyChanged
+    public class Proxy : BaseViewModel
     {
         public string Host { get; }
-
         public ushort Port { get; }
 
         private bool? isResponding;
@@ -71,8 +71,9 @@ namespace CheckProxy.Core.Proxy
 
         public Proxy(string host, ushort port)
         {
-            if (string.IsNullOrEmpty(host)) throw new ArgumentException(nameof(host));
-            if (port <= 0) throw new ArgumentOutOfRangeException(nameof(port));
+            Guard.Against.NullOrEmpty(host, nameof(host));
+            Guard.Against.NegativeOrZero(port, nameof(port));
+
             if (!IsValidHost(host)) throw new ArgumentException(nameof(host));
 
             Host = host;

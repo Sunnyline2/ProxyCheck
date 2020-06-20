@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace CheckProxy.Core.Proxy
 {
+
+    //public static readonly Lazy<Regex> ProxyRegex = new Lazy<Regex>(() => new Regex(@"(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(\d{1,6})", RegexOptions.Compiled));
     public class ProxyService : IProxyService
     {
         public const string PROXY_JUDGE_ENDPOINT = "http://www.cooleasy.com/azenv.php";
@@ -20,7 +22,7 @@ namespace CheckProxy.Core.Proxy
             this.proxyServiceConfiguration = proxyServiceConfiguration ?? throw new ArgumentNullException(nameof(proxyServiceConfiguration));
         }
 
-        public async Task<IProxyInfo> GetProxyInformationAsync(string host, ushort port, CancellationToken cancellationToken)
+        public async Task<IProxyInfo> GetProxyInformationsAsync(string host, ushort port, CancellationToken cancellationToken)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
             if (port <= 0) throw new ArgumentOutOfRangeException(nameof(port));

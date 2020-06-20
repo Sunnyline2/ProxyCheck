@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,23 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CheckProxy.Desktop.ViewModels;
 
-namespace CheckProxy.Desktop.Views
+namespace WpfApp1
 {
     /// <summary>
-    /// Interaction logic for MainView.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainView : MetroWindow
+    public partial class MainWindow : Window
     {
-        public readonly MainViewModel ViewModel;
-
-        public MainView()
+        public MainWindow()
         {
             InitializeComponent();
-            ViewModel = new MainViewModel(this);
-            DataContext = ViewModel;
+
+            this.DataContext = new ViewModel();
         }
     }
 }

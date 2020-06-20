@@ -5,6 +5,6 @@ namespace CheckProxy.Core.Proxy
 {
     public interface IProxyService
     {
-        Task<IProxyInfo> GetProxyInformationAsync(string host, ushort port, CancellationToken cancellationToken);
+        Task<IProxyInfo> GetProxyInformationsAsync(string host, ushort port, CancellationToken cancellationToken);
     }
 }
